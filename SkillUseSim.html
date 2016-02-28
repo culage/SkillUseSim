@@ -1,0 +1,66 @@
+<html>
+<title>パズドラスキル使用シミュ</title>
+<head>
+<style>
+.mons {
+	text-align: center;
+	width: 3em;
+}
+.num {
+	text-align: right;
+	width: 2em;
+}
+</style>
+<script src="./logic.js"></script>
+</head>
+<body>
+
+<div>
+<table>
+  <tr>
+    <th>スキルターン</th>
+    <td><input id="txtSt0" type="text" class="num" value="16"></td>
+    <td><input id="txtSt1" type="text" class="num" value="7"></td>
+    <td><input id="txtSt2" type="text" class="num" value="4"></td>
+    <td><input id="txtSt3" type="text" class="num" value="8"></td>
+    <td><input id="txtSt4" type="text" class="num" value="9"></td>
+    <td><input id="txtSt5" type="text" class="num" value="16"></td>
+  </tr>
+  <tr>
+    <th>ヘイスト</th>
+    <td><input id="txtHe0" type="text" class="num" value="2"></td>
+    <td><input id="txtHe1" type="text" class="num" value="1"></td>
+    <td><input id="txtHe2" type="text" class="num" value="0"></td>
+    <td><input id="txtHe3" type="text" class="num" value="0"></td>
+    <td><input id="txtHe4" type="text" class="num" value="1"></td>
+    <td><input id="txtHe5" type="text" class="num" value="2"></td>
+  </tr>
+  <tr>
+    <th>スキルブースト</th>
+    <td><input id="txtSp0" type="text" class="num" value="1"></td>
+    <td><input id="txtSp1" type="text" class="num" value="1"></td>
+    <td><input id="txtSp2" type="text" class="num" value="0"></td>
+    <td><input id="txtSp3" type="text" class="num" value="2"></td>
+    <td><input id="txtSp4" type="text" class="num" value="2"></td>
+    <td><input id="txtSp5" type="text" class="num" value="1"></td>
+  </tr>
+</table>
+</div>
+<div>
+<input type="button" id="btnInit" value="Init">
+</div>
+
+<br>
+
+<div id="team">
+<input id="btnMons0" type="button" class="mons">
+<input id="btnMons1" type="button" class="mons">
+<input id="btnMons2" type="button" class="mons">
+<input id="btnMons3" type="button" class="mons">
+<input id="btnMons4" type="button" class="mons">
+<input id="btnMons5" type="button" class="mons">
+<div>
+<div>
+<input type="button" id="btnNext" value="next">
+</div>
+

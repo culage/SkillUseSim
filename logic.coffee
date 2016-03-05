@@ -21,7 +21,20 @@ class App
 		@init()
 
 	init: ->
+		@initMonsSwap()
+
 		@initSkillUse()
+
+	initMonsSwap: ->
+		@swapper = new MonsSwapper()
+		@lastElement = new LastElementKeeper()
+
+		for i in [0..@TEAM_MAX]
+			@swapper.addMonsElement ["txtSt#{i}", "txtHe#{i}", "txtSp#{i}"]
+			@lastElement.addElement ["txtSt#{i}", "txtHe#{i}", "txtSp#{i}"]
+
+		document.getElementById("btnSwapL").onclick = => @swapper.swapLeft (@lastElement.get())
+		document.getElementById("btnSwapR").onclick = => @swapper.swapRight(@lastElement.get())
 
 	initSkillUse: ->
 		@team = new Team()
@@ -91,6 +104,38 @@ class MonsView
 	onUpdateTurn: (e) ->
 		@viewElement.value = e.turn
 		@viewElement.disabled = (e.turn != 0);
+
+class MonsSwapper
+	constructor: ->
+		@list = []
+	addMonsElement: (itemsId) ->
+		@list.push itemsId.map((id) => document.getElementById(id))
+	swapLeft: (activeElement) ->
+		@swapItem activeElement, -1
+	swapRight: (activeElement) ->
+		@swapItem activeElement, +1
+	swapItem: (activeElement, plus) ->
+		itemsIndex = @list.findIndex( (items) => items.some((el) => el == activeElement) )
+		if itemsIndex == -1 then return
+		swapItemsIndex = itemsIndex + plus
+		if swapItemsIndex < 0 or @list.length <= swapItemsIndex
+			return
+		@swap @list[itemsIndex], @list[swapItemsIndex]
+		@list[swapItemsIndex][0].focus()
+	swap: (items1, items2) ->
+		for el, i in items1
+			swapValue       = items1[i].value
+			items1[i].value = items2[i].value
+			items2[i].value = swapValue
+
+class LastElementKeeper
+	constructor: ->
+		@lastElement = null
+	addElement: (itemsId) ->
+		for el in itemsId.map((id) => document.getElementById(id))
+			el.addEventListener "focus", (e) => @lastElement = e.target
+	get: ->
+		return @lastElement
 
 window.onload = ->
 	app = new App()

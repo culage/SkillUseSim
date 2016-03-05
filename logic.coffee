@@ -11,33 +11,33 @@ class EventDispatcher
 		e.target = @ if not e.target
 		for listener in @__ed_listeners[e.type]
 			if typeof(listener) == "object"
-				listener[eventName].call listener, e
+				listener[e.type].call listener, e
 			else
 				listener e
 
 class App
 	constructor: ->
 		@TEAM_MAX = 5
-		document.getElementById("●").onclick = @init
-		document.getElementById("●").onclick = @next
+		document.getElementById("btnInit").onclick = => @init()
+		document.getElementById("btnNext").onclick = => @next()
 
 	init: ->
 		@team = new Team()
 
 		for i in [0..@TEAM_MAX]
-			max       = document.getElementById("●").value;
-			haste     = document.getElementById("●").value;
-			preCharge = document.getElementById("●").value;
-			mons = new Mons(max, haste, preCharge)
-			mons.addEventListener "onUpdateTurn", new MonsView("●")
+			max     = document.getElementById("txtSt#{i}").value;
+			haste   = document.getElementById("txtHe#{i}").value;
+			preTurn = document.getElementById("txtSp#{i}").value;
+			mons = new Mons(max, haste, preTurn)
+			mons.addEventListener "onUpdateTurn", new MonsView("btnMons#{i}")
 			
-			document.getElementById("●").onclick = @createClickEventListener(mons)
+			document.getElementById("btnMons#{i}").onclick = @createClickEventListener(mons)
 			@team.add mons
 		
 		@team.preCharge()
 
 	createClickEventListener: (mons) ->
-		return (mons) -> mons.invoke()
+		return -> mons.invoke()
 
 	next: ->
 		@team.decTurn 1
@@ -50,15 +50,14 @@ class Team
 		mons.setTeam @
 	preCharge: ->
 		mons.preCharge() for mons in @list
-	decTurn: (dec) ->
-		mons.decTurn(dec) for mons in @list
+	decTurn: (dec, expect) ->
+		mons.decTurn(dec) for mons in @list when mons != expect
 
 class Mons
 	mixin @, EventDispatcher
-	constructor: (@max, @haste, @preCharge) ->
+	constructor: (@max, @haste, @preTurn) ->
 		@team = null
 		@turn = @max
-		@onUpdateTurn()
 	setTeam: (team) ->
 		@team = team
 	decTurn: (dec) ->
@@ -67,23 +66,24 @@ class Mons
 			@turn = 0
 		@onUpdateTurn()
 	preCharge: ->
-		@team.decTurn @preCharge
+		@team.decTurn @preTurn
 	invoke: ->
 		if @turn > 0
 			return
 		@turn = @max
 		@onUpdateTurn()
 		if @haste > 0
-			team.decTurn @haste
+			@team.decTurn @haste, @
 	onUpdateTurn: ->
 		@dispatchEvent {type: "onUpdateTurn", turn: @turn}
 
 class MonsView
 	constructor: (eleId) ->
-		@viewElement = getElementById(eleId);
+		@viewElement = document.getElementById(eleId);
 	onUpdateTurn: (e) ->
 		@viewElement.value = e.turn
+		@viewElement.disabled = (e.turn != 0);
 
-
-app = new App()
+window.onload = ->
+	app = new App()
 

@@ -18,11 +18,12 @@ class EventDispatcher
 class App
 	constructor: ->
 		@TEAM_MAX = 5
-		document.getElementById("btnInit").onclick = => @init()
-		document.getElementById("btnNext").onclick = => @next()
 		@init()
 
 	init: ->
+		@initSkillUse()
+
+	initSkillUse: ->
 		@team = new Team()
 
 		for i in [0..@TEAM_MAX]
@@ -36,6 +37,9 @@ class App
 			@team.add mons
 		
 		@team.preCharge()
+
+		document.getElementById("btnInit").onclick = => @init()
+		document.getElementById("btnNext").onclick = => @next()
 
 	createClickEventListener: (mons) ->
 		return -> mons.invoke()

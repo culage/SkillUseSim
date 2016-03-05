@@ -51,20 +51,14 @@ EventDispatcher = (function() {
 App = (function() {
   function App() {
     this.TEAM_MAX = 5;
-    document.getElementById("btnInit").onclick = (function(_this) {
-      return function() {
-        return _this.init();
-      };
-    })(this);
-    document.getElementById("btnNext").onclick = (function(_this) {
-      return function() {
-        return _this.next();
-      };
-    })(this);
     this.init();
   }
 
   App.prototype.init = function() {
+    return this.initSkillUse();
+  };
+
+  App.prototype.initSkillUse = function() {
     var haste, i, j, max, mons, preTurn, ref;
     this.team = new Team();
     for (i = j = 0, ref = this.TEAM_MAX; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
@@ -76,7 +70,17 @@ App = (function() {
       document.getElementById("btnMons" + i).onclick = this.createClickEventListener(mons);
       this.team.add(mons);
     }
-    return this.team.preCharge();
+    this.team.preCharge();
+    document.getElementById("btnInit").onclick = (function(_this) {
+      return function() {
+        return _this.init();
+      };
+    })(this);
+    return document.getElementById("btnNext").onclick = (function(_this) {
+      return function() {
+        return _this.next();
+      };
+    })(this);
   };
 
   App.prototype.createClickEventListener = function(mons) {

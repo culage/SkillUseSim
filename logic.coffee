@@ -28,15 +28,23 @@ class App
 		@initSkillUse()
 
 	initSaveLoad: ->
-		ids = []
+		cookieAccess = new CookieAccess()
+	
+		ids = ["txtSaveName"]
 		for i in [0..@TEAM_MAX]
 			ids.push id for id in ["txtSt#{i}", "txtHe#{i}", "txtSp#{i}"]
-		@vs = new ValueStorage(ids, new CookieAccess())
+		@vs = new ValueStorage(ids, cookieAccess)
 		@vs.addViewer new ValueStorageListView("lstSaveList")
 
 		document.getElementById("btnSave").onclick = => @vs.save    document.getElementById("txtSaveName").value
 		document.getElementById("btnLoad").onclick = => @vs.load    document.getElementById("lstSaveList").selectedIndex
 		document.getElementById("btnDel" ).onclick = => @vs.delete  document.getElementById("lstSaveList").selectedIndex
+		
+		@css = new CurrentSelectStorage("lstSaveList", cookieAccess)
+		@css.load()
+		@vs.load document.getElementById("lstSaveList").selectedIndex
+		
+		window.onunload = => @css.save @vs.currentIdx
 
 	initMonsSwap: ->
 		@swapper = new MonsSwapper()
@@ -164,7 +172,10 @@ class ValueStorage
 			@list = []
 	save: (name) ->
 		if name == "" then return
-		@list.push name if @list.indexOf(name) == -1
+		@currentIdx = @list.indexOf(name)
+		if @currentIdx == -1
+			@list.push name
+			@currentIdx = @list.length - 1
 		@updateList()
 		datas = {}
 		datas[el.id] = el.value for el in @itemsEl
@@ -177,6 +188,7 @@ class ValueStorage
 		datas = JSON.parse(datas)
 		for id, value of datas
 			document.getElementById(id).value = value
+		@currentIdx = dataIdx
 	delete: (dataIdx) ->
 		if dataIdx == -1 then return
 		@list = @list.filter((dummy,idx) => idx != dataIdx)
@@ -220,6 +232,15 @@ class CookieAccess extends DataAccess
 	delete: (key) ->
 		document.cookie = "#{key}="
 
+class CurrentSelectStorage
+	constructor: (selectId, dataAccess) ->
+		@DATA_KEY = "current_data_index"
+		@selectEl = document.getElementById(selectId)
+		@dataAccess = dataAccess
+	save: (saveIdx)->
+		@dataAccess.save @DATA_KEY, saveIdx
+	load: ->
+		@selectEl.selectedIndex = @dataAccess.load(@DATA_KEY)
 
 window.onload = ->
 	app = new App()

@@ -72,7 +72,7 @@ App = (function() {
       haste = document.getElementById("txtHe" + i).value;
       preTurn = document.getElementById("txtSp" + i).value;
       mons = new Mons(max, haste, preTurn);
-      mons.addEventListener("onUpdateTurn", new MonsView("btnMons" + i));
+      mons.addViewer(new MonsView("btnMons" + i));
       document.getElementById("btnMons" + i).onclick = this.createClickEventListener(mons);
       this.team.add(mons);
     }
@@ -167,6 +167,11 @@ Mons = (function() {
     if (this.haste > 0) {
       return this.team.decTurn(this.haste, this);
     }
+  };
+
+  Mons.prototype.addViewer = function(viewer) {
+    this.addEventListener("onUpdateTurn", viewer);
+    return this.onUpdateTurn();
   };
 
   Mons.prototype.onUpdateTurn = function() {

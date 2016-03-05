@@ -30,7 +30,7 @@ class App
 			haste   = document.getElementById("txtHe#{i}").value;
 			preTurn = document.getElementById("txtSp#{i}").value;
 			mons = new Mons(max, haste, preTurn)
-			mons.addEventListener "onUpdateTurn", new MonsView("btnMons#{i}")
+			mons.addViewer new MonsView("btnMons#{i}")
 			
 			document.getElementById("btnMons#{i}").onclick = @createClickEventListener(mons)
 			@team.add mons
@@ -75,6 +75,9 @@ class Mons
 		@onUpdateTurn()
 		if @haste > 0
 			@team.decTurn @haste, @
+	addViewer: (viewer) ->
+		@addEventListener "onUpdateTurn", viewer
+		@onUpdateTurn()
 	onUpdateTurn: ->
 		@dispatchEvent {type: "onUpdateTurn", turn: @turn}
 

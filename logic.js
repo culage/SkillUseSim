@@ -61,6 +61,7 @@ App = (function() {
         return _this.next();
       };
     })(this);
+    this.init();
   }
 
   App.prototype.init = function() {

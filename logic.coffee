@@ -20,6 +20,7 @@ class App
 		@TEAM_MAX = 5
 		document.getElementById("btnInit").onclick = => @init()
 		document.getElementById("btnNext").onclick = => @next()
+		@init()
 
 	init: ->
 		@team = new Team()

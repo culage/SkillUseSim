@@ -16,6 +16,8 @@
 #mons-table input.num {
 	font-weight			: bold;
 	text-align			: right;
+	padding-left		: 0px;
+	padding-right		: 2px;
 }
 #btnSave {
 	margin-bottom		: 5px;
@@ -43,6 +45,7 @@
 	margin-bottom		: 0;
 }
 
+/* btn-mons */
 .btn-mons {
     padding: 6px;
     margin: 0;
@@ -84,4 +87,14 @@
   /* Usually, !important should be avoided but here it's really needed :) */
   box-shadow: none !important;
   text-shadow: none !important;
+}
+
+/* モバイル用の調整 */
+.row div {
+	padding:3px;
+}
+.table td {
+	background-color	: #0269c2;
+	padding: 0px;
+	margin: 0px;
 }

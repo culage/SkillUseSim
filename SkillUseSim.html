@@ -1,93 +1,110 @@
-<html>
-<title>パズドラスキル使用シミュ</title>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-<meta charset="utf-8">
-<style>
-.mons {
-	text-align: center;
-	width: 3em;
-}
-.num {
-	text-align: right;
-	width: 2em;
-}
-th {
-	padding: 3px;
-}
-th, td {
-	border: solid 1px gray;
-}
-</style>
-<script src="./logic.js"></script>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>パズドラ スキル使用シミュレーター</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="style.css" rel="stylesheet">
 </head>
 <body>
 
-<div>
-<input  id="txtSaveName" type="text">
-<input  id="btnSave" type="button" value="save"><br>
-<select id="lstSaveList"><option></option></select>
-<input  id="btnLoad" type="button" value="load">
-<input  id="btnDel"  type="button" value="del">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="logic.js"></script>
+
+<header id="header">
+	<div id="header-title" class="container">
+		<h1>パズドラ スキル使用シミュレーター</h1>
+	</div>
+</header>
+
+<div id="body" class="container">
+	<div id="mons-data-panel" class="panel panel-primary">
+
+		<div id="mons-data-title" class="panel-heading">モンスターデータ</div>
+
+		<div id="save-load-sec" class="panel-body">
+			<div class="row">
+				<div class="col-xs-8"><input id="txtSaveName" type="text" class="form-control"></div>
+				<div class="col-xs-4"><input id="btnSave"     type="button" class="btn btn-primary btn-block " value="保存"></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-8"><select id="lstSaveList" class="form-control"><option></option></select></div>
+				<div class="col-xs-2"><input  id="btnLoad" type="button" class="btn btn-primary btn-block " value="読込"></div>
+				<div class="col-xs-2"><input  id="btnDel"  type="button" class="btn btn-danger  btn-block " value="削除"></div>
+			</div>
+		</div>
+
+		<table id="mons-table" class="table table-condenseda">
+		<tr>
+			<th class="col-xs-2">
+				<input type="button" id="btnSwapL" class="btn btn-primary btn-xs" value="&laquo;">　
+				<input type="button" id="btnSwapR" class="btn btn-primary btn-xs" value="&raquo;">
+			</th>
+			<th>L</th>
+			<th>&nbsp;</th>
+			<th>&nbsp;</th>
+			<th>&nbsp;</th>
+			<th>&nbsp;</th>
+			<th>F</th>
+		</tr>
+		<tr>
+			<th class="mons-status-header">スキルターン</th>
+			<td><input id="txtSt0" type="text" class="form-control num" value="16"></td>
+			<td><input id="txtSt1" type="text" class="form-control num" value="7"></td>
+			<td><input id="txtSt2" type="text" class="form-control num" value="4"></td>
+			<td><input id="txtSt3" type="text" class="form-control num" value="8"></td>
+			<td><input id="txtSt4" type="text" class="form-control num" value="9"></td>
+			<td><input id="txtSt5" type="text" class="form-control num" value="16"></td>
+		</tr>
+		<tr>
+			<th class="mons-status-header">ヘイスト</th>
+			<td><input id="txtHe0" type="text" class="form-control num" value="2"></td>
+			<td><input id="txtHe1" type="text" class="form-control num" value="1"></td>
+			<td><input id="txtHe2" type="text" class="form-control num" value="0"></td>
+			<td><input id="txtHe3" type="text" class="form-control num" value="0"></td>
+			<td><input id="txtHe4" type="text" class="form-control num" value="1"></td>
+			<td><input id="txtHe5" type="text" class="form-control num" value="2"></td>
+		</tr>
+		<tr>
+			<th class="mons-status-header">スキルブースト</th>
+			<td><input id="txtSp0" type="text" class="form-control num" value="1"></td>
+			<td><input id="txtSp1" type="text" class="form-control num" value="1"></td>
+			<td><input id="txtSp2" type="text" class="form-control num" value="0"></td>
+			<td><input id="txtSp3" type="text" class="form-control num" value="2"></td>
+			<td><input id="txtSp4" type="text" class="form-control num" value="2"></td>
+			<td><input id="txtSp5" type="text" class="form-control num" value="1"></td>
+		</tr>
+		</table>
+	</div>
+
+
+	<h3><span class="glyphicon glyphicon-ok"></span> スキル使用</h3>
+	<div id="mons-team" class="row">
+		<div class="col-xs-2"><input id="btnMons0" type="button" class="btn-mons btn-block" value="00"></div>
+		<div class="col-xs-2"><input id="btnMons1" type="button" class="btn-mons btn-block" value="00"></div>
+		<div class="col-xs-2"><input id="btnMons2" type="button" class="btn-mons btn-block" value="00"></div>
+		<div class="col-xs-2"><input id="btnMons3" type="button" class="btn-mons btn-block" value="00"></div>
+		<div class="col-xs-2"><input id="btnMons4" type="button" class="btn-mons btn-block" value="00"></div>
+		<div class="col-xs-2"><input id="btnMons5" type="button" class="btn-mons btn-block" value="00"></div>
+	</div>
+
+	<div id="mons-nav" class="row">
+		<div class="col-xs-7"><input id="btnNext" type="button" class="btn btn-primary btn-block" value="次のターンへ"></div>
+		<div class="col-xs-5"><input id="btnInit" type="button" class="btn btn-warning btn-block" value="リセット"></div>
+	</div>
+
 </div>
 
-<div>
-<table>
-  <tr>
-    <th>&nbsp;</th>
-    <th>L</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
-    <th>F</th>
-  </tr>
-  <tr>
-    <th>スキルターン</th>
-    <td><input id="txtSt0" type="text" class="num" value="16"></td>
-    <td><input id="txtSt1" type="text" class="num" value="7"></td>
-    <td><input id="txtSt2" type="text" class="num" value="4"></td>
-    <td><input id="txtSt3" type="text" class="num" value="8"></td>
-    <td><input id="txtSt4" type="text" class="num" value="9"></td>
-    <td><input id="txtSt5" type="text" class="num" value="16"></td>
-  </tr>
-  <tr>
-    <th>ヘイスト</th>
-    <td><input id="txtHe0" type="text" class="num" value="2"></td>
-    <td><input id="txtHe1" type="text" class="num" value="1"></td>
-    <td><input id="txtHe2" type="text" class="num" value="0"></td>
-    <td><input id="txtHe3" type="text" class="num" value="0"></td>
-    <td><input id="txtHe4" type="text" class="num" value="1"></td>
-    <td><input id="txtHe5" type="text" class="num" value="2"></td>
-  </tr>
-  <tr>
-    <th>スキルブースト</th>
-    <td><input id="txtSp0" type="text" class="num" value="1"></td>
-    <td><input id="txtSp1" type="text" class="num" value="1"></td>
-    <td><input id="txtSp2" type="text" class="num" value="0"></td>
-    <td><input id="txtSp3" type="text" class="num" value="2"></td>
-    <td><input id="txtSp4" type="text" class="num" value="2"></td>
-    <td><input id="txtSp5" type="text" class="num" value="1"></td>
-  </tr>
-</table>
-</div>
-<div>
-<input type="button" id="btnInit" value="Init">
-　
-<input type="button" id="btnSwapL" value="←">
-<input type="button" id="btnSwapR" value="→">
-</div>
+<footer id="footer">
+	<div class="container">
+		<p>Copyright (C) 2016 <a href="http://d.hatena.ne.jp/ku__ra__ge/">くらげのChangelog</a> All Rights Reserved.</p>
+		<p>powerd by <a href="http://coffeescript.org/">CoffeeScript</a>.</p>
+		<p>powerd by <a href="http://getbootstrap.com/">Bootstrap</a>.</p>
+	</div>
+</footer>
 
-<br>
-
-<div id="team">
-<input id="btnMons0" type="button" class="mons">
-<input id="btnMons1" type="button" class="mons">
-<input id="btnMons2" type="button" class="mons">
-<input id="btnMons3" type="button" class="mons">
-<input id="btnMons4" type="button" class="mons">
-<input id="btnMons5" type="button" class="mons">
-<div>
-<div>
-<input type="button" id="btnNext" value="next">
-</div>
-
+</body>
+</html>

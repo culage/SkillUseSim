@@ -1,0 +1,87 @@
+#header {
+	color				: white;
+	background-color	: #0269c2;
+	margin-bottom		: 20px;
+}
+#header-title {
+	padding-bottom		: 10px;
+}
+#mons-data-panel {
+	margin-bottom		: 20px;
+}
+#mons-data-title {
+	font-size			: x-small;
+	padding				: 3px;
+}
+#mons-table input.num {
+	font-weight			: bold;
+	text-align			: right;
+}
+#btnSave {
+	margin-bottom		: 5px;
+}
+#mons-table th {
+	text-align			: center;
+}
+#mons-table th.mons-status-header {
+	padding-top			: 15px;
+}
+#mons-team {
+	margin-bottom		: 20px;
+}
+#footer {
+	margin-top			: 50px;
+	padding-top			: 20px;
+	padding-bottom		: 30px;
+	color				: #99979c;
+	background-color	: #2a2730;
+}
+#footer a {
+	color				: #ffffff;
+}
+#footer p {
+	margin-bottom		: 0;
+}
+
+.btn-mons {
+    padding: 6px;
+    margin: 0;
+    cursor: pointer;
+    border: 3px double #bbb;
+    font: bold;
+    font-size: x-large;
+    text-decoration: none;
+    white-space: nowrap;
+    color: #555;
+    background-color: #ddd;
+    transition: background-color .2s ease-out;
+    background-clip: padding-box; /* Fix bleeding */
+    border-radius: 7px;
+    box-shadow: 2px 5px 5px rgba(0, 0, 0, .6);
+    text-shadow: 0 1px 0 rgba(255,255,255, .9);
+}
+ 
+.btn-mons:hover{
+    background-color: #eee;
+    color: #555;
+}
+ 
+.btn-mons:active{
+    background: #e9e9e9;
+    position: relative;
+    top: 1px;
+    text-shadow: none;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .3) inset;
+    outline: none;
+}
+
+.btn-mons[disabled], .btn-mons[disabled]:hover, .btn-mons[disabled]:active{
+  border-color: #eaeaea;
+  background: #fafafa;
+  cursor: default;
+  position: static;
+  color: #999;
+  /* Usually, !important should be avoided but here it's really needed :) */
+  box-shadow: none !important;
+  text-shadow: none !important;
+}

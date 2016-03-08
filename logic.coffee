@@ -47,8 +47,10 @@ class App
 		window.onunload = => @css.save @vs.currentIdx
 
 	initMonsSwap: ->
-		@swapper = new MonsSwapper()
 		@lastElement = new LastElementKeeper()
+
+		@swapper = new MonsSwapper()
+		@swapper.addEventListener "onSwaped", (e) => @lastElement.set(e.swapToElement)
 
 		for i in [0..@TEAM_MAX]
 			@swapper.addMonsElement ["txtSt#{i}", "txtHe#{i}", "txtSp#{i}"]
@@ -128,6 +130,7 @@ class MonsView
 
 
 class MonsSwapper
+	mixin @, EventDispatcher
 	constructor: ->
 		@list = []
 	addMonsElement: (itemsId) ->
@@ -143,7 +146,7 @@ class MonsSwapper
 		if swapItemsIndex < 0 or @list.length <= swapItemsIndex
 			return
 		@swap @list[itemsIndex], @list[swapItemsIndex]
-		@list[swapItemsIndex][0].focus()
+		@dispatchEvent { type: "onSwaped", swapToElement: @list[swapItemsIndex][0] }
 	swap: (items1, items2) ->
 		for el, i in items1
 			swapValue       = items1[i].value
@@ -156,6 +159,8 @@ class LastElementKeeper
 	addElement: (itemsId) ->
 		for el in itemsId.map((id) => document.getElementById(id))
 			el.addEventListener "focus", (e) => @lastElement = e.target
+	set: (el) ->
+		@lastElement = el
 	get: ->
 		return @lastElement
 

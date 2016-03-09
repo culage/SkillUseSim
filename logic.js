@@ -144,7 +144,7 @@
       this.team.preCharge();
       document.getElementById("btnInit").onclick = (function(_this) {
         return function() {
-          return _this.init();
+          return _this.initSkillUse();
         };
       })(this);
       return document.getElementById("btnNext").onclick = (function(_this) {

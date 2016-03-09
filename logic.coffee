@@ -74,7 +74,7 @@ class App
 		
 		@team.preCharge()
 
-		document.getElementById("btnInit").onclick = => @init()
+		document.getElementById("btnInit").onclick = => @initSkillUse()
 		document.getElementById("btnNext").onclick = => @next()
 
 	createClickEventListener: (mons) ->

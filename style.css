@@ -1,9 +1,10 @@
+button .glyphicon {
+	margin-right		: 10px;
+}
 #header {
 	color				: white;
 	background-color	: #0269c2;
 	margin-bottom		: 20px;
-}
-#header-title {
 	padding-bottom		: 10px;
 }
 #mons-data-panel {

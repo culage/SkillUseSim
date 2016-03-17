@@ -40,9 +40,14 @@ class App
 		@vs = new ValueStorage(ids, cookieAccess)
 		@vs.addViewer new ValueStorageListView("#lstSaveList")
 
-		$("#btnSave").addEventListener "click", => @vs.save    $("#txtSaveName").value
-		$("#btnLoad").addEventListener "click", => @vs.load    $("#lstSaveList").selectedIndex
-		$("#btnDel" ).addEventListener "click", => @vs.delete  $("#lstSaveList").selectedIndex
+		$("#btnSave").addEventListener "click", =>
+			@vs.save    $("#txtSaveName").value
+			alert "保存しました。"
+		$("#btnLoad").addEventListener "click", =>
+			@vs.load    $("#lstSaveList").selectedIndex
+		$("#btnDel" ).addEventListener "click", =>
+			if confirm("削除します。よろしいですか？") == true
+				@vs.delete  $("#lstSaveList").selectedIndex
 		
 		@css = new CurrentSelectStorage("#lstSaveList", cookieAccess)
 		@css.load()

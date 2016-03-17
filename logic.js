@@ -88,7 +88,8 @@
       this.vs.addViewer(new ValueStorageListView("#lstSaveList"));
       $("#btnSave").addEventListener("click", (function(_this) {
         return function() {
-          return _this.vs.save($("#txtSaveName").value);
+          _this.vs.save($("#txtSaveName").value);
+          return alert("保存しました。");
         };
       })(this));
       $("#btnLoad").addEventListener("click", (function(_this) {
@@ -98,7 +99,9 @@
       })(this));
       $("#btnDel").addEventListener("click", (function(_this) {
         return function() {
-          return _this.vs["delete"]($("#lstSaveList").selectedIndex);
+          if (confirm("削除します。よろしいですか？") === true) {
+            return _this.vs["delete"]($("#lstSaveList").selectedIndex);
+          }
         };
       })(this));
       this.css = new CurrentSelectStorage("#lstSaveList", cookieAccess);

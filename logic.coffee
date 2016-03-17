@@ -60,6 +60,12 @@ class App
 		document.getElementById("btnSwapR").onclick = => @swapper.swapRight(@lastElement.get())
 
 	initSkillUse: ->
+		@initTeam()
+
+		document.getElementById("btnInit").onclick = => @initTeam()
+		document.getElementById("btnNext").onclick = => @next()
+
+	initTeam: ->
 		@team = new Team()
 
 		for i in [0..@TEAM_MAX]
@@ -73,9 +79,6 @@ class App
 			@team.add mons
 		
 		@team.preCharge()
-
-		document.getElementById("btnInit").onclick = => @initSkillUse()
-		document.getElementById("btnNext").onclick = => @next()
 
 	createClickEventListener: (mons) ->
 		return -> mons.invoke()

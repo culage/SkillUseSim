@@ -130,6 +130,20 @@
     };
 
     App.prototype.initSkillUse = function() {
+      this.initTeam();
+      document.getElementById("btnInit").onclick = (function(_this) {
+        return function() {
+          return _this.initTeam();
+        };
+      })(this);
+      return document.getElementById("btnNext").onclick = (function(_this) {
+        return function() {
+          return _this.next();
+        };
+      })(this);
+    };
+
+    App.prototype.initTeam = function() {
       var haste, i, j, max, mons, preTurn, ref;
       this.team = new Team();
       for (i = j = 0, ref = this.TEAM_MAX; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
@@ -141,17 +155,7 @@
         document.getElementById("btnMons" + i).onclick = this.createClickEventListener(mons);
         this.team.add(mons);
       }
-      this.team.preCharge();
-      document.getElementById("btnInit").onclick = (function(_this) {
-        return function() {
-          return _this.initSkillUse();
-        };
-      })(this);
-      return document.getElementById("btnNext").onclick = (function(_this) {
-        return function() {
-          return _this.next();
-        };
-      })(this);
+      return this.team.preCharge();
     };
 
     App.prototype.createClickEventListener = function(mons) {

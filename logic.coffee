@@ -45,6 +45,7 @@ class App
 			alert "保存しました。"
 		$$("#btnLoad").addEventListener "click", =>
 			@vs.load    $$("#lstSaveList").selectedIndex
+			$("#btnInit").click()
 		$$("#btnDel" ).addEventListener "click", =>
 			if confirm("削除します。よろしいですか？") == true
 				@vs.delete  $$("#lstSaveList").selectedIndex

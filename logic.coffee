@@ -26,6 +26,7 @@ class App
 		@initSaveLoad()
 		@initMonsSwap()
 		@initSkillUse()
+		@initTurnCnt()
 
 	initSaveLoad: ->
 		cookieAccess = new CookieAccess()
@@ -85,6 +86,17 @@ class App
 
 	next: ->
 		@team.decTurn 1
+
+	initTurnCnt: ->
+		@turnCnt = new TurnCounter()
+		@turnCnt.addViewer new TurnView("txtNowTurn")
+		
+		f1 = document.getElementById("btnInit").onclick
+		document.getElementById("btnInit").onclick = => f1(); @turnCnt.init();
+
+		f2 = document.getElementById("btnNext").onclick
+		document.getElementById("btnNext").onclick = => f2(); @turnCnt.incTurn();
+
 
 class Team
 	constructor: ->
@@ -250,10 +262,32 @@ class CurrentSelectStorage
 	load: ->
 		@selectEl.selectedIndex = @dataAccess.load(@DATA_KEY)
 
+
+
+class TurnCounter
+	mixin @, EventDispatcher
+	constructor: ->
+		@init()
+	init: ->
+		@turn = 0
+		@onUpdateTurn()
+	incTurn: ->
+		@turn += 1
+		@onUpdateTurn()
+	addViewer: (viewer) ->
+		@addEventListener "onUpdateTurn", viewer
+		@onUpdateTurn()
+	onUpdateTurn: ->
+		@dispatchEvent { type: "onUpdateTurn", turn: @turn }
+
+class TurnView
+	constructor: (id) ->
+		@el = document.getElementById(id)
+	onUpdateTurn: (e) ->
+		@el.innerHTML = e.turn
+
 window.onload = ->
 	app = new App()
-
-
 
 
 

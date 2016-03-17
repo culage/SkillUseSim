@@ -614,7 +614,7 @@ TurnCounter = (function() {
   }
 
   TurnCounter.prototype.init = function() {
-    this.turn = 0;
+    this.turn = 1;
     return this.onUpdateTurn();
   };
 

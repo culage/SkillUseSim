@@ -285,7 +285,7 @@ class TurnCounter
 	constructor: ->
 		@init()
 	init: ->
-		@turn = 0
+		@turn = 1
 		@onUpdateTurn()
 	incTurn: ->
 		@turn += 1

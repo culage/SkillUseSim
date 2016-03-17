@@ -1,5 +1,8 @@
 mixin = (o1, o2) -> o1.prototype[key] = o2.prototype[key] for key of o2.prototype
 
+if not $?
+	$ = (s) -> document.querySelector(s)
+
 class EventDispatcher
 	addEventListener: (type, obj) ->
 		@__ed_listeners       = {} if not @__ed_listeners
@@ -31,19 +34,19 @@ class App
 	initSaveLoad: ->
 		cookieAccess = new CookieAccess()
 	
-		ids = ["txtSaveName"]
+		ids = ["#txtSaveName"]
 		for i in [0..@TEAM_MAX]
-			ids.push id for id in ["txtSt#{i}", "txtHe#{i}", "txtSp#{i}"]
+			ids.push id for id in ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}"]
 		@vs = new ValueStorage(ids, cookieAccess)
-		@vs.addViewer new ValueStorageListView("lstSaveList")
+		@vs.addViewer new ValueStorageListView("#lstSaveList")
 
-		document.getElementById("btnSave").onclick = => @vs.save    document.getElementById("txtSaveName").value
-		document.getElementById("btnLoad").onclick = => @vs.load    document.getElementById("lstSaveList").selectedIndex
-		document.getElementById("btnDel" ).onclick = => @vs.delete  document.getElementById("lstSaveList").selectedIndex
+		$("#btnSave").onclick = => @vs.save    $("#txtSaveName").value
+		$("#btnLoad").onclick = => @vs.load    $("#lstSaveList").selectedIndex
+		$("#btnDel" ).onclick = => @vs.delete  $("#lstSaveList").selectedIndex
 		
-		@css = new CurrentSelectStorage("lstSaveList", cookieAccess)
+		@css = new CurrentSelectStorage("#lstSaveList", cookieAccess)
 		@css.load()
-		@vs.load document.getElementById("lstSaveList").selectedIndex
+		@vs.load $("#lstSaveList").selectedIndex
 		
 		window.onunload = => @css.save @vs.currentIdx
 
@@ -54,29 +57,29 @@ class App
 		@swapper.addEventListener "onSwaped", (e) => @lastElement.set(e.swapToElement)
 
 		for i in [0..@TEAM_MAX]
-			@swapper.addMonsElement ["txtSt#{i}", "txtHe#{i}", "txtSp#{i}"]
-			@lastElement.addElement ["txtSt#{i}", "txtHe#{i}", "txtSp#{i}"]
+			@swapper.addMonsElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}"]
+			@lastElement.addElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}"]
 
-		document.getElementById("btnSwapL").onclick = => @swapper.swapLeft (@lastElement.get())
-		document.getElementById("btnSwapR").onclick = => @swapper.swapRight(@lastElement.get())
+		$("#btnSwapL").onclick = => @swapper.swapLeft (@lastElement.get())
+		$("#btnSwapR").onclick = => @swapper.swapRight(@lastElement.get())
 
 	initSkillUse: ->
 		@initTeam()
 
-		document.getElementById("btnInit").onclick = => @initTeam()
-		document.getElementById("btnNext").onclick = => @next()
+		$("#btnInit").onclick = => @initTeam()
+		$("#btnNext").onclick = => @next()
 
 	initTeam: ->
 		@team = new Team()
 
 		for i in [0..@TEAM_MAX]
-			max     = document.getElementById("txtSt#{i}").value;
-			haste   = document.getElementById("txtHe#{i}").value;
-			preTurn = document.getElementById("txtSp#{i}").value;
+			max     = $("#txtSt#{i}").value;
+			haste   = $("#txtHe#{i}").value;
+			preTurn = $("#txtSp#{i}").value;
 			mons = new Mons(max, haste, preTurn)
-			mons.addViewer new MonsView("btnMons#{i}")
+			mons.addViewer new MonsView("#btnMons#{i}")
 			
-			document.getElementById("btnMons#{i}").onclick = @createClickEventListener(mons)
+			$("#btnMons#{i}").onclick = @createClickEventListener(mons)
 			@team.add mons
 		
 		@team.preCharge()
@@ -89,13 +92,13 @@ class App
 
 	initTurnCnt: ->
 		@turnCnt = new TurnCounter()
-		@turnCnt.addViewer new TurnView("txtNowTurn")
+		@turnCnt.addViewer new TurnView("#txtNowTurn")
 		
-		f1 = document.getElementById("btnInit").onclick
-		document.getElementById("btnInit").onclick = => f1(); @turnCnt.init();
+		f1 = $("#btnInit").onclick
+		$("#btnInit").onclick = => f1(); @turnCnt.init();
 
-		f2 = document.getElementById("btnNext").onclick
-		document.getElementById("btnNext").onclick = => f2(); @turnCnt.incTurn();
+		f2 = $("#btnNext").onclick
+		$("#btnNext").onclick = => f2(); @turnCnt.incTurn();
 
 
 class Team
@@ -138,7 +141,7 @@ class Mons
 
 class MonsView
 	constructor: (eleId) ->
-		@viewElement = document.getElementById(eleId);
+		@viewElement = $(eleId);
 	onUpdateTurn: (e) ->
 		@viewElement.value = e.turn
 		@viewElement.disabled = (e.turn != 0);
@@ -149,7 +152,7 @@ class MonsSwapper
 	constructor: ->
 		@list = []
 	addMonsElement: (itemsId) ->
-		@list.push itemsId.map((id) => document.getElementById(id))
+		@list.push itemsId.map((id) => $(id))
 	swapLeft: (activeElement) ->
 		@swapItem activeElement, -1
 	swapRight: (activeElement) ->
@@ -172,7 +175,7 @@ class LastElementKeeper
 	constructor: ->
 		@lastElement = null
 	addElement: (itemsId) ->
-		for el in itemsId.map((id) => document.getElementById(id))
+		for el in itemsId.map((id) => $(id))
 			el.addEventListener "focus", (e) => @lastElement = e.target
 	set: (el) ->
 		@lastElement = el
@@ -184,7 +187,7 @@ class ValueStorage
 	mixin @, EventDispatcher
 	constructor: (itemsId, dataAccess) ->
 		@LIST_KEY = "list"
-		@itemsEl = itemsId.map((id) => document.getElementById(id))
+		@itemsEl = itemsId.map((id) => $(id))
 		@dataAccess = dataAccess
 		try
 			@list = JSON.parse(@dataAccess.load(@LIST_KEY))
@@ -207,7 +210,7 @@ class ValueStorage
 		datas = @dataAccess.load(@getDataKey(dataIdx))
 		datas = JSON.parse(datas)
 		for id, value of datas
-			document.getElementById(id).value = value
+			$("#" + id).value = value
 		@currentIdx = dataIdx
 	delete: (dataIdx) ->
 		if dataIdx == -1 then return
@@ -222,7 +225,7 @@ class ValueStorage
 
 class ValueStorageListView
 	constructor: (id) ->
-		@el = document.getElementById(id)
+		@el = $(id)
 	onUpdateList: (e) ->
 		@el.remove(0) for [0..(@el.length - 1)]
 		for item in e.list
@@ -255,7 +258,7 @@ class CookieAccess extends DataAccess
 class CurrentSelectStorage
 	constructor: (selectId, dataAccess) ->
 		@DATA_KEY = "current_data_index"
-		@selectEl = document.getElementById(selectId)
+		@selectEl = $(selectId)
 		@dataAccess = dataAccess
 	save: (saveIdx)->
 		@dataAccess.save @DATA_KEY, saveIdx
@@ -282,7 +285,7 @@ class TurnCounter
 
 class TurnView
 	constructor: (id) ->
-		@el = document.getElementById(id)
+		@el = $(id)
 	onUpdateTurn: (e) ->
 		@el.innerHTML = e.turn
 

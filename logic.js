@@ -428,6 +428,7 @@
         this.currentIdx = this.list.length - 1;
       }
       this.updateList();
+      this.onSave(this.currentIdx);
       datas = {};
       ref = this.itemsEl;
       for (j = 0, len = ref.length; j < len; j++) {
@@ -475,8 +476,16 @@
       });
     };
 
+    ValueStorage.prototype.onSave = function(saveIdx) {
+      return this.dispatchEvent({
+        type: "onSave",
+        saveIdx: saveIdx
+      });
+    };
+
     ValueStorage.prototype.addViewer = function(viewer) {
       this.addEventListener("onUpdateList", viewer);
+      this.addEventListener("onSave", viewer);
       return this.updateList();
     };
 
@@ -505,7 +514,9 @@
       return results;
     };
 
-    ValueStorageListView.prototype.onAddItem = function(e) {};
+    ValueStorageListView.prototype.onSave = function(e) {
+      return this.el.selectedIndex = e.saveIdx;
+    };
 
     return ValueStorageListView;
 

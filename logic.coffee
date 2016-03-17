@@ -198,6 +198,7 @@ class ValueStorage
 			@list.push name
 			@currentIdx = @list.length - 1
 		@updateList()
+		@onSave @currentIdx
 		datas = {}
 		datas[el.id] = el.value for el in @itemsEl
 		@dataAccess.save @getDataKey(@list.indexOf(name)), JSON.stringify(datas)
@@ -217,8 +218,11 @@ class ValueStorage
 	updateList: ->
 		@dataAccess.save @LIST_KEY, JSON.stringify(@list)
 		@dispatchEvent {type: "onUpdateList", list: @list }
+	onSave: (saveIdx) ->
+		@dispatchEvent {type: "onSave", saveIdx: saveIdx }
 	addViewer: (viewer) ->
 		@addEventListener "onUpdateList", viewer
+		@addEventListener "onSave"      , viewer
 		@updateList()
 
 class ValueStorageListView
@@ -230,8 +234,8 @@ class ValueStorageListView
 			option = document.createElement("option")
 			option.text = item
 			@el.add option
-	onAddItem: (e) ->
-		#星アクティブにする
+	onSave: (e) ->
+		@el.selectedIndex = e.saveIdx
 
 class DataAccess
 	save  : (key, val) ->

@@ -40,15 +40,15 @@ class App
 		@vs = new ValueStorage(ids, cookieAccess)
 		@vs.addViewer new ValueStorageListView("#lstSaveList")
 
-		$("#btnSave").onclick = => @vs.save    $("#txtSaveName").value
-		$("#btnLoad").onclick = => @vs.load    $("#lstSaveList").selectedIndex
-		$("#btnDel" ).onclick = => @vs.delete  $("#lstSaveList").selectedIndex
+		$("#btnSave").addEventListener "click", => @vs.save    $("#txtSaveName").value
+		$("#btnLoad").addEventListener "click", => @vs.load    $("#lstSaveList").selectedIndex
+		$("#btnDel" ).addEventListener "click", => @vs.delete  $("#lstSaveList").selectedIndex
 		
 		@css = new CurrentSelectStorage("#lstSaveList", cookieAccess)
 		@css.load()
 		@vs.load $("#lstSaveList").selectedIndex
 		
-		window.onunload = => @css.save @vs.currentIdx
+		window.addEventListener "unload", => @css.save @vs.currentIdx
 
 	initMonsSwap: ->
 		@lastElement = new LastElementKeeper()
@@ -60,14 +60,14 @@ class App
 			@swapper.addMonsElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}"]
 			@lastElement.addElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}"]
 
-		$("#btnSwapL").onclick = => @swapper.swapLeft (@lastElement.get())
-		$("#btnSwapR").onclick = => @swapper.swapRight(@lastElement.get())
+		$("#btnSwapL").addEventListener "click", => @swapper.swapLeft (@lastElement.get())
+		$("#btnSwapR").addEventListener "click", => @swapper.swapRight(@lastElement.get())
 
 	initSkillUse: ->
 		@initTeam()
 
-		$("#btnInit").onclick = => @initTeam()
-		$("#btnNext").onclick = => @next()
+		$("#btnInit").addEventListener "click", => @initTeam()
+		$("#btnNext").addEventListener "click", => @next()
 
 	initTeam: ->
 		@team = new Team()
@@ -79,6 +79,7 @@ class App
 			mons = new Mons(max, haste, preTurn)
 			mons.addViewer new MonsView("#btnMons#{i}")
 			
+			# このイベントは上書きしたいので、onclickに代入する
 			$("#btnMons#{i}").onclick = @createClickEventListener(mons)
 			@team.add mons
 		
@@ -94,11 +95,8 @@ class App
 		@turnCnt = new TurnCounter()
 		@turnCnt.addViewer new TurnView("#txtNowTurn")
 		
-		f1 = $("#btnInit").onclick
-		$("#btnInit").onclick = => f1(); @turnCnt.init();
-
-		f2 = $("#btnNext").onclick
-		$("#btnNext").onclick = => f2(); @turnCnt.incTurn();
+		$("#btnInit").addEventListener "click", => @turnCnt.init()
+		$("#btnNext").addEventListener "click", => @turnCnt.incTurn()
 
 
 class Team
@@ -289,7 +287,7 @@ class TurnView
 	onUpdateTurn: (e) ->
 		@el.innerHTML = e.turn
 
-window.onload = ->
+window.addEventListener "load", ->
 	app = new App()
 
 

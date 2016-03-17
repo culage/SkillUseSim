@@ -86,29 +86,29 @@
       }
       this.vs = new ValueStorage(ids, cookieAccess);
       this.vs.addViewer(new ValueStorageListView("#lstSaveList"));
-      $("#btnSave").onclick = (function(_this) {
+      $("#btnSave").addEventListener("click", (function(_this) {
         return function() {
           return _this.vs.save($("#txtSaveName").value);
         };
-      })(this);
-      $("#btnLoad").onclick = (function(_this) {
+      })(this));
+      $("#btnLoad").addEventListener("click", (function(_this) {
         return function() {
           return _this.vs.load($("#lstSaveList").selectedIndex);
         };
-      })(this);
-      $("#btnDel").onclick = (function(_this) {
+      })(this));
+      $("#btnDel").addEventListener("click", (function(_this) {
         return function() {
           return _this.vs["delete"]($("#lstSaveList").selectedIndex);
         };
-      })(this);
+      })(this));
       this.css = new CurrentSelectStorage("#lstSaveList", cookieAccess);
       this.css.load();
       this.vs.load($("#lstSaveList").selectedIndex);
-      return window.onunload = (function(_this) {
+      return window.addEventListener("unload", (function(_this) {
         return function() {
           return _this.css.save(_this.vs.currentIdx);
         };
-      })(this);
+      })(this));
     };
 
     App.prototype.initMonsSwap = function() {
@@ -124,30 +124,30 @@
         this.swapper.addMonsElement(["#txtSt" + i, "#txtHe" + i, "#txtSp" + i]);
         this.lastElement.addElement(["#txtSt" + i, "#txtHe" + i, "#txtSp" + i]);
       }
-      $("#btnSwapL").onclick = (function(_this) {
+      $("#btnSwapL").addEventListener("click", (function(_this) {
         return function() {
           return _this.swapper.swapLeft(_this.lastElement.get());
         };
-      })(this);
-      return $("#btnSwapR").onclick = (function(_this) {
+      })(this));
+      return $("#btnSwapR").addEventListener("click", (function(_this) {
         return function() {
           return _this.swapper.swapRight(_this.lastElement.get());
         };
-      })(this);
+      })(this));
     };
 
     App.prototype.initSkillUse = function() {
       this.initTeam();
-      $("#btnInit").onclick = (function(_this) {
+      $("#btnInit").addEventListener("click", (function(_this) {
         return function() {
           return _this.initTeam();
         };
-      })(this);
-      return $("#btnNext").onclick = (function(_this) {
+      })(this));
+      return $("#btnNext").addEventListener("click", (function(_this) {
         return function() {
           return _this.next();
         };
-      })(this);
+      })(this));
     };
 
     App.prototype.initTeam = function() {
@@ -176,23 +176,18 @@
     };
 
     App.prototype.initTurnCnt = function() {
-      var f1, f2;
       this.turnCnt = new TurnCounter();
       this.turnCnt.addViewer(new TurnView("#txtNowTurn"));
-      f1 = $("#btnInit").onclick;
-      $("#btnInit").onclick = (function(_this) {
+      $("#btnInit").addEventListener("click", (function(_this) {
         return function() {
-          f1();
           return _this.turnCnt.init();
         };
-      })(this);
-      f2 = $("#btnNext").onclick;
-      return $("#btnNext").onclick = (function(_this) {
+      })(this));
+      return $("#btnNext").addEventListener("click", (function(_this) {
         return function() {
-          f2();
           return _this.turnCnt.incTurn();
         };
-      })(this);
+      })(this));
     };
 
     return App;
@@ -625,10 +620,10 @@
 
   })();
 
-  window.onload = function() {
+  window.addEventListener("load", function() {
     var app;
     return app = new App();
-  };
+  });
 
 }).call(this);
 

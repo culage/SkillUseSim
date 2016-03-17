@@ -70,7 +70,8 @@
       this.initSaveLoad();
       this.initMonsSwap();
       this.initSkillUse();
-      return this.initTurnCnt();
+      this.initTurnCnt();
+      return this.initTextSelect();
     };
 
     App.prototype.initSaveLoad = function() {
@@ -191,6 +192,26 @@
           return _this.turnCnt.incTurn();
         };
       })(this));
+    };
+
+    App.prototype.initTextSelect = function() {
+      var i, id, ids, j, k, l, len, len1, ref, ref1, results;
+      ids = [];
+      for (i = j = 0, ref = this.TEAM_MAX; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
+        ref1 = ["#txtSt" + i, "#txtHe" + i, "#txtSp" + i];
+        for (k = 0, len = ref1.length; k < len; k++) {
+          id = ref1[k];
+          ids.push(id);
+        }
+      }
+      results = [];
+      for (l = 0, len1 = ids.length; l < len1; l++) {
+        id = ids[l];
+        results.push($(id).addEventListener("click", function() {
+          return this.select();
+        }));
+      }
+      return results;
     };
 
     return App;

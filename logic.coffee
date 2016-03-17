@@ -30,6 +30,7 @@ class App
 		@initMonsSwap()
 		@initSkillUse()
 		@initTurnCnt()
+		@initTextSelect()
 
 	initSaveLoad: ->
 		cookieAccess = new CookieAccess()
@@ -103,6 +104,12 @@ class App
 		$("#btnInit").addEventListener "click", => @turnCnt.init()
 		$("#btnNext").addEventListener "click", => @turnCnt.incTurn()
 
+	initTextSelect: ->
+		ids = []
+		for i in [0..@TEAM_MAX]
+			ids.push id for id in ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}"]
+		for id in ids
+			$(id).addEventListener "click", -> this.select()
 
 class Team
 	constructor: ->

@@ -253,7 +253,7 @@ class ValueStorage
 		datas = @dataAccess.load(@getDataKey(dataIdx))
 		datas = JSON.parse(datas)
 		for id, value of datas
-			$$("#" + id).value = value
+			$$("#" + id).value = value if $$("#" + id)
 		@currentIdx = dataIdx
 	delete: (dataIdx) ->
 		if dataIdx == -1 then return

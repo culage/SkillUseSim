@@ -519,7 +519,9 @@
       datas = JSON.parse(datas);
       for (id in datas) {
         value = datas[id];
-        $$("#" + id).value = value;
+        if ($$("#" + id)) {
+          $$("#" + id).value = value;
+        }
       }
       return this.currentIdx = dataIdx;
     };

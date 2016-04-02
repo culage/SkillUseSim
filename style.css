@@ -103,6 +103,11 @@ button .glyphicon {
   text-shadow: none !important;
 }
 
+.s2-charge {
+    box-shadow: 0px 0px 3px 3px rgb(255,255,120),
+                2px 5px 5px rgba(0, 0, 0, .6);
+}
+
 /* モバイル用の調整 */
 .row div {
 	padding:3px;

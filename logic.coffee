@@ -79,10 +79,12 @@ class App
 		@team = new Team()
 
 		for i in [0..@TEAM_MAX]
-			max     = $$("#txtSt#{i}").value;
-			haste   = $$("#txtHe#{i}").value;
-			preTurn = $$("#txtSp#{i}").value;
-			mons = new Mons(max, haste, preTurn)
+			max     = Number($$("#txtSt#{i}").value);
+			haste   = Number($$("#txtHe#{i}").value);
+			preTurn = Number($$("#txtSp#{i}").value);
+			s2max   = Number($$("#txtS2St#{i}").value);
+			s2haste = Number($$("#txtS2He#{i}").value);
+			mons = new Mons(max, haste, preTurn, s2max, s2haste)
 			mons.addViewer new MonsView("#btnMons#{i}")
 			
 			# このイベントは上書きしたいので、onclickに代入する
@@ -124,38 +126,58 @@ class Team
 
 class Mons
 	mixin @, EventDispatcher
-	constructor: (@max, @haste, @preTurn) ->
+	constructor: (@max, @haste, @preTurn, @s2max, @s2haste) ->
 		@team = null
+		@initTurn()
+	initTurn: ->
 		@turn = @max
+		if @hasS2()
+			@s2turn = @max + @s2max
+		else
+			@s2turn = 0
+	hasS2: ->
+		@s2max > 0
 	setTeam: (team) ->
 		@team = team
 	decTurn: (dec) ->
 		@turn -= dec
 		if @turn < 0
 			@turn = 0
+		@s2turn -= dec
+		if @s2turn < 0
+			@s2turn = 0
 		@onUpdateTurn()
 	preCharge: ->
 		@team.decTurn @preTurn
 	invoke: ->
-		if @turn > 0
+		if @hasS2() && @s2turn == 0
+			@initTurn()
+			@onUpdateTurn()
+			if @s2haste > 0
+				@team.decTurn @s2haste, @
 			return
-		@turn = @max
-		@onUpdateTurn()
-		if @haste > 0
-			@team.decTurn @haste, @
+		if @turn == 0
+			@initTurn()
+			@onUpdateTurn()
+			if @haste > 0
+				@team.decTurn @haste, @
+			return
 	addViewer: (viewer) ->
 		@addEventListener "onUpdateTurn", viewer
 		@onUpdateTurn()
 	onUpdateTurn: ->
-		@dispatchEvent {type: "onUpdateTurn", turn: @turn}
+		@dispatchEvent {type: "onUpdateTurn", turn: @turn, s2turn: @s2turn, hasS2: @hasS2()}
 
 class MonsView
 	constructor: (eleId) ->
 		@viewElement = $$(eleId);
 	onUpdateTurn: (e) ->
-		@viewElement.innerHTML = "(S1) #{e.turn}<br>(S2) 0"
+		@viewElement.innerHTML = "(S1) #{e.turn}<br>(S2) #{e.s2turn}"
 		@viewElement.disabled = (e.turn != 0);
-
+		if e.s2turn == 0 and e.hasS2 == true and 
+			$(@viewElement).addClass("s2-charge");
+		else
+			$(@viewElement).removeClass("s2-charge");
 
 class MonsSwapper
 	mixin @, EventDispatcher

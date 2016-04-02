@@ -154,13 +154,15 @@
     };
 
     App.prototype.initTeam = function() {
-      var haste, i, j, max, mons, preTurn, ref;
+      var haste, i, j, max, mons, preTurn, ref, s2haste, s2max;
       this.team = new Team();
       for (i = j = 0, ref = this.TEAM_MAX; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        max = $$("#txtSt" + i).value;
-        haste = $$("#txtHe" + i).value;
-        preTurn = $$("#txtSp" + i).value;
-        mons = new Mons(max, haste, preTurn);
+        max = Number($$("#txtSt" + i).value);
+        haste = Number($$("#txtHe" + i).value);
+        preTurn = Number($$("#txtSp" + i).value);
+        s2max = Number($$("#txtS2St" + i).value);
+        s2haste = Number($$("#txtS2He" + i).value);
+        mons = new Mons(max, haste, preTurn, s2max, s2haste);
         mons.addViewer(new MonsView("#btnMons" + i));
         $$("#btnMons" + i).onclick = this.createClickEventListener(mons);
         this.team.add(mons);
@@ -258,13 +260,28 @@
   Mons = (function() {
     mixin(Mons, EventDispatcher);
 
-    function Mons(max1, haste1, preTurn1) {
+    function Mons(max1, haste1, preTurn1, s2max1, s2haste1) {
       this.max = max1;
       this.haste = haste1;
       this.preTurn = preTurn1;
+      this.s2max = s2max1;
+      this.s2haste = s2haste1;
       this.team = null;
-      this.turn = this.max;
+      this.initTurn();
     }
+
+    Mons.prototype.initTurn = function() {
+      this.turn = this.max;
+      if (this.hasS2()) {
+        return this.s2turn = this.max + this.s2max;
+      } else {
+        return this.s2turn = 0;
+      }
+    };
+
+    Mons.prototype.hasS2 = function() {
+      return this.s2max > 0;
+    };
 
     Mons.prototype.setTeam = function(team) {
       return this.team = team;
@@ -275,6 +292,10 @@
       if (this.turn < 0) {
         this.turn = 0;
       }
+      this.s2turn -= dec;
+      if (this.s2turn < 0) {
+        this.s2turn = 0;
+      }
       return this.onUpdateTurn();
     };
 
@@ -283,13 +304,20 @@
     };
 
     Mons.prototype.invoke = function() {
-      if (this.turn > 0) {
+      if (this.hasS2() && this.s2turn === 0) {
+        this.initTurn();
+        this.onUpdateTurn();
+        if (this.s2haste > 0) {
+          this.team.decTurn(this.s2haste, this);
+        }
         return;
       }
-      this.turn = this.max;
-      this.onUpdateTurn();
-      if (this.haste > 0) {
-        return this.team.decTurn(this.haste, this);
+      if (this.turn === 0) {
+        this.initTurn();
+        this.onUpdateTurn();
+        if (this.haste > 0) {
+          this.team.decTurn(this.haste, this);
+        }
       }
     };
 
@@ -301,7 +329,9 @@
     Mons.prototype.onUpdateTurn = function() {
       return this.dispatchEvent({
         type: "onUpdateTurn",
-        turn: this.turn
+        turn: this.turn,
+        s2turn: this.s2turn,
+        hasS2: this.hasS2()
       });
     };
 
@@ -315,8 +345,13 @@
     }
 
     MonsView.prototype.onUpdateTurn = function(e) {
-      this.viewElement.innerHTML = "(S1) " + e.turn + "<br>(S2) 0";
-      return this.viewElement.disabled = e.turn !== 0;
+      this.viewElement.innerHTML = "(S1) " + e.turn + "<br>(S2) " + e.s2turn;
+      this.viewElement.disabled = e.turn !== 0;
+      if (e.s2turn === 0 && e.hasS2 === true && $(this.viewElement).addClass("s2-charge")) {
+
+      } else {
+        return $(this.viewElement).removeClass("s2-charge");
+      }
     };
 
     return MonsView;

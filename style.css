@@ -14,7 +14,8 @@ button .glyphicon {
 	font-size			: x-small;
 	padding				: 3px;
 }
-#mons-table input.num {
+#mons-table input.num,
+#s2-table   input.num {
 	font-weight			: bold;
 	text-align			: right;
 	padding-left		: 0px;
@@ -23,11 +24,20 @@ button .glyphicon {
 #btnSave {
 	margin-bottom		: 5px;
 }
-#mons-table th {
+#mons-table th,
+#s2-table   th {
 	text-align			: center;
 }
-#mons-table th.mons-status-header {
+#mons-table th.mons-status-header,
+#s2-table   th.mons-status-header {
 	padding-top			: 15px;
+}
+#s2-toggle  th {
+	text-align			: center;
+}
+#s2-toggle     {
+	border-top			: solid 1px #dddddd;
+	border-bottom		: solid 1px #dddddd;
 }
 #mons-team {
 	margin-bottom		: 20px;

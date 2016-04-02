@@ -38,7 +38,7 @@
 			</div>
 		</div>
 
-		<table id="mons-table" class="table table-condenseda">
+		<table id="mons-table" class="table">
 		<tr>
 			<th class="col-xs-4 col-md-2">
 				<input type="button" id="btnSwapL" class="btn btn-primary btn-xs" value="&laquo;">　
@@ -79,8 +79,36 @@
 			<td><input id="txtSp5" type="number" pattern="\d*" class="form-control num" value="1"></td>
 		</tr>
 		</table>
-	</div>
+		
+		<table id="s2-toggle" class="table table-condensed">
+		<tr>
+			<th class="col-xs-4 col-md-2"><a data-toggle="collapse" href="#s2-table">継承スキル <span class="glyphicon glyphicon-collapse-down"></span></a></th>
+			<td>&nbsp;</td>
+		</tr>
+		</table>
+		
+		<table id="s2-table" class="table collapse">
+		<tr>
+			<th class="mons-status-header col-xs-4 col-md-2"><span class="hidden-xs">スキルターン</span><span class="visible-xs">Sターン</span></th>
+			<td><input id="txtISt0" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtISt1" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtISt2" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtISt3" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtISt4" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtISt5" type="number" pattern="\d*" class="form-control num" value="0"></td>
+		</tr>
+		<tr>
+			<th class="mons-status-header">ヘイスト</th>
+			<td><input id="txtIHe0" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtIHe1" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtIHe2" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtIHe3" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtIHe4" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtIHe5" type="number" pattern="\d*" class="form-control num" value="0"></td>
+		</tr>
+		</table>
 
+	</div>
 
 	<h3><span class="glyphicon glyphicon-ok"></span> スキル使用 ( <span id="txtNowTurn">99</span> ターン目 )</h3>
 	<div id="mons-team" class="row">

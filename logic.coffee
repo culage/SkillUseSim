@@ -172,7 +172,17 @@ class MonsView
 	constructor: (eleId) ->
 		@viewElement = $$(eleId);
 	onUpdateTurn: (e) ->
-		@viewElement.innerHTML = "(S1) #{e.turn}<br>(S2) #{e.s2turn}"
+		s1turnView = e.turn
+		s2turnView = if e.hasS2 == true then e.s2turn else "-"
+		if  e.hasS2 == true and e.turn == 0
+			s1charging = "class='skill-non-charging'"
+			s2charging = "class='skill-charging'"
+		else
+			s1charging = "class='skill-charging'"
+			s2charging = "class='skill-non-charging'"
+		@viewElement.innerHTML = "<span class='skill-num'>S1:</span><span #{s1charging}>#{s1turnView}</span><br>
+		                          <span class='skill-num'>S2:</span><span #{s2charging}>#{s2turnView}</span>"
+		
 		@viewElement.disabled = (e.turn != 0);
 		if e.s2turn == 0 and e.hasS2 == true and 
 			$(@viewElement).addClass("s2-charge");

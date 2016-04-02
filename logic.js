@@ -345,7 +345,17 @@
     }
 
     MonsView.prototype.onUpdateTurn = function(e) {
-      this.viewElement.innerHTML = "(S1) " + e.turn + "<br>(S2) " + e.s2turn;
+      var s1charging, s1turnView, s2charging, s2turnView;
+      s1turnView = e.turn;
+      s2turnView = e.hasS2 === true ? e.s2turn : "-";
+      if (e.hasS2 === true && e.turn === 0) {
+        s1charging = "class='skill-non-charging'";
+        s2charging = "class='skill-charging'";
+      } else {
+        s1charging = "class='skill-charging'";
+        s2charging = "class='skill-non-charging'";
+      }
+      this.viewElement.innerHTML = "<span class='skill-num'>S1:</span><span " + s1charging + ">" + s1turnView + "</span><br> <span class='skill-num'>S2:</span><span " + s2charging + ">" + s2turnView + "</span>";
       this.viewElement.disabled = e.turn !== 0;
       if (e.s2turn === 0 && e.hasS2 === true && $(this.viewElement).addClass("s2-charge")) {
 

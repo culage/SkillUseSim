@@ -153,7 +153,7 @@ class MonsView
 	constructor: (eleId) ->
 		@viewElement = $$(eleId);
 	onUpdateTurn: (e) ->
-		@viewElement.value = e.turn
+		@viewElement.innerHTML = "(S1) #{e.turn}<br>(S2) 0"
 		@viewElement.disabled = (e.turn != 0);
 
 

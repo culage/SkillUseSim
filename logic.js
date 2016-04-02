@@ -315,7 +315,7 @@
     }
 
     MonsView.prototype.onUpdateTurn = function(e) {
-      this.viewElement.value = e.turn;
+      this.viewElement.innerHTML = "(S1) " + e.turn + "<br>(S2) 0";
       return this.viewElement.disabled = e.turn !== 0;
     };
 

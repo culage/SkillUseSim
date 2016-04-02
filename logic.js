@@ -77,7 +77,7 @@
       cookieAccess = new CookieAccess();
       ids = ["#txtSaveName"];
       for (i = j = 0, ref = this.TEAM_MAX; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        ref1 = ["#txtSt" + i, "#txtHe" + i, "#txtSp" + i];
+        ref1 = ["#txtSt" + i, "#txtHe" + i, "#txtSp" + i, "#txtISt" + i, "#txtIHe" + i];
         for (k = 0, len = ref1.length; k < len; k++) {
           id = ref1[k];
           ids.push(id);
@@ -124,8 +124,8 @@
         };
       })(this));
       for (i = j = 0, ref = this.TEAM_MAX; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        this.swapper.addMonsElement(["#txtSt" + i, "#txtHe" + i, "#txtSp" + i]);
-        this.lastElement.addElement(["#txtSt" + i, "#txtHe" + i, "#txtSp" + i]);
+        this.swapper.addMonsElement(["#txtSt" + i, "#txtHe" + i, "#txtSp" + i, "#txtISt" + i, "#txtIHe" + i]);
+        this.lastElement.addElement(["#txtSt" + i, "#txtHe" + i, "#txtSp" + i, "#txtISt" + i, "#txtIHe" + i]);
       }
       $$("#btnSwapL").addEventListener("click", (function(_this) {
         return function() {
@@ -197,7 +197,7 @@
       var i, id, ids, j, k, l, len, len1, ref, ref1, results;
       ids = [];
       for (i = j = 0, ref = this.TEAM_MAX; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        ref1 = ["#txtSt" + i, "#txtHe" + i, "#txtSp" + i];
+        ref1 = ["#txtSt" + i, "#txtHe" + i, "#txtSp" + i, "#txtISt" + i, "#txtIHe" + i];
         for (k = 0, len = ref1.length; k < len; k++) {
           id = ref1[k];
           ids.push(id);

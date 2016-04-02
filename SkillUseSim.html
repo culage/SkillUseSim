@@ -38,7 +38,7 @@
 			</div>
 		</div>
 
-		<table id="mons-table" class="table table-condenseda">
+		<table id="mons-table" class="table">
 		<tr>
 			<th class="col-xs-4 col-md-2">
 				<input type="button" id="btnSwapL" class="btn btn-primary btn-xs" value="&laquo;">　
@@ -79,22 +79,50 @@
 			<td><input id="txtSp5" type="number" pattern="\d*" class="form-control num" value="1"></td>
 		</tr>
 		</table>
-	</div>
+		
+		<table id="s2-toggle" class="table table-condensed">
+		<tr>
+			<th class="col-xs-4 col-md-2"><a data-toggle="collapse" href="#s2-table">継承スキル <span class="glyphicon glyphicon-collapse-down"></span></a></th>
+			<td>&nbsp;</td>
+		</tr>
+		</table>
+		
+		<table id="s2-table" class="table collapse">
+		<tr>
+			<th class="mons-status-header col-xs-4 col-md-2"><span class="hidden-xs">スキルターン</span><span class="visible-xs">Sターン</span></th>
+			<td><input id="txtS2St0" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtS2St1" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtS2St2" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtS2St3" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtS2St4" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtS2St5" type="number" pattern="\d*" class="form-control num" value="0"></td>
+		</tr>
+		<tr>
+			<th class="mons-status-header">ヘイスト</th>
+			<td><input id="txtS2He0" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtS2He1" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtS2He2" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtS2He3" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtS2He4" type="number" pattern="\d*" class="form-control num" value="0"></td>
+			<td><input id="txtS2He5" type="number" pattern="\d*" class="form-control num" value="0"></td>
+		</tr>
+		</table>
 
+	</div>
 
 	<h3><span class="glyphicon glyphicon-ok"></span> スキル使用 ( <span id="txtNowTurn">99</span> ターン目 )</h3>
 	<div id="mons-team" class="row">
-		<div class="col-xs-2"><input id="btnMons0" type="button" class="btn-mons btn-block" value="00"></div>
-		<div class="col-xs-2"><input id="btnMons1" type="button" class="btn-mons btn-block" value="00"></div>
-		<div class="col-xs-2"><input id="btnMons2" type="button" class="btn-mons btn-block" value="00"></div>
-		<div class="col-xs-2"><input id="btnMons3" type="button" class="btn-mons btn-block" value="00"></div>
-		<div class="col-xs-2"><input id="btnMons4" type="button" class="btn-mons btn-block" value="00"></div>
-		<div class="col-xs-2"><input id="btnMons5" type="button" class="btn-mons btn-block" value="00"></div>
+		<div class="col-xs-2"><button id="btnMons0" class="btn-mons btn-block">00</div>
+		<div class="col-xs-2"><button id="btnMons1" class="btn-mons btn-block">00</div>
+		<div class="col-xs-2"><button id="btnMons2" class="btn-mons btn-block">00</div>
+		<div class="col-xs-2"><button id="btnMons3" class="btn-mons btn-block">00</div>
+		<div class="col-xs-2"><button id="btnMons4" class="btn-mons btn-block">00</div>
+		<div class="col-xs-2"><button id="btnMons5" class="btn-mons btn-block">00</div>
 	</div>
 
 	<div id="mons-nav" class="row">
-		<div class="col-xs-7"><button id="btnNext" type="button" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-play-circle hidden-xs"></span>次のターンへ</button></div>
-		<div class="col-xs-5"><button id="btnInit" type="button" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-refresh hidden-xs"></span>リセット</button></div>
+		<div class="col-xs-7"><button id="btnNext" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-play-circle hidden-xs"></span>次のターンへ</button></div>
+		<div class="col-xs-5"><button id="btnInit" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-refresh hidden-xs"></span>リセット</button></div>
 	</div>
 
 </div>

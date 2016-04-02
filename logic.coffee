@@ -36,7 +36,7 @@ class App
 	
 		ids = ["#txtSaveName"]
 		for i in [0..@TEAM_MAX]
-			ids.push id for id in ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}"]
+			ids.push id for id in ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtS2St#{i}", "#txtS2He#{i}"]
 		@vs = new ValueStorage(ids, cookieAccess)
 		@vs.addViewer new ValueStorageListView("#lstSaveList")
 
@@ -63,8 +63,8 @@ class App
 		@swapper.addEventListener "onSwaped", (e) => @lastElement.set(e.swapToElement)
 
 		for i in [0..@TEAM_MAX]
-			@swapper.addMonsElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}"]
-			@lastElement.addElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}"]
+			@swapper.addMonsElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtS2St#{i}", "#txtS2He#{i}"]
+			@lastElement.addElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtS2St#{i}", "#txtS2He#{i}"]
 
 		$$("#btnSwapL").addEventListener "click", => @swapper.swapLeft (@lastElement.get())
 		$$("#btnSwapR").addEventListener "click", => @swapper.swapRight(@lastElement.get())
@@ -79,10 +79,12 @@ class App
 		@team = new Team()
 
 		for i in [0..@TEAM_MAX]
-			max     = $$("#txtSt#{i}").value;
-			haste   = $$("#txtHe#{i}").value;
-			preTurn = $$("#txtSp#{i}").value;
-			mons = new Mons(max, haste, preTurn)
+			max     = Number($$("#txtSt#{i}").value);
+			haste   = Number($$("#txtHe#{i}").value);
+			preTurn = Number($$("#txtSp#{i}").value);
+			s2max   = Number($$("#txtS2St#{i}").value);
+			s2haste = Number($$("#txtS2He#{i}").value);
+			mons = new Mons(max, haste, preTurn, s2max, s2haste)
 			mons.addViewer new MonsView("#btnMons#{i}")
 			
 			# このイベントは上書きしたいので、onclickに代入する
@@ -107,7 +109,7 @@ class App
 	initTextSelect: ->
 		ids = []
 		for i in [0..@TEAM_MAX]
-			ids.push id for id in ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}"]
+			ids.push id for id in ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtS2St#{i}","#txtS2He#{i}"]
 		for id in ids
 			$$(id).addEventListener "click", -> this.select()
 
@@ -124,38 +126,68 @@ class Team
 
 class Mons
 	mixin @, EventDispatcher
-	constructor: (@max, @haste, @preTurn) ->
+	constructor: (@max, @haste, @preTurn, @s2max, @s2haste) ->
 		@team = null
+		@initTurn()
+	initTurn: ->
 		@turn = @max
+		if @hasS2()
+			@s2turn = @max + @s2max
+		else
+			@s2turn = 0
+	hasS2: ->
+		@s2max > 0
 	setTeam: (team) ->
 		@team = team
 	decTurn: (dec) ->
 		@turn -= dec
 		if @turn < 0
 			@turn = 0
+		@s2turn -= dec
+		if @s2turn < 0
+			@s2turn = 0
 		@onUpdateTurn()
 	preCharge: ->
 		@team.decTurn @preTurn
 	invoke: ->
-		if @turn > 0
+		if @hasS2() && @s2turn == 0
+			@initTurn()
+			@onUpdateTurn()
+			if @s2haste > 0
+				@team.decTurn @s2haste, @
 			return
-		@turn = @max
-		@onUpdateTurn()
-		if @haste > 0
-			@team.decTurn @haste, @
+		if @turn == 0
+			@initTurn()
+			@onUpdateTurn()
+			if @haste > 0
+				@team.decTurn @haste, @
+			return
 	addViewer: (viewer) ->
 		@addEventListener "onUpdateTurn", viewer
 		@onUpdateTurn()
 	onUpdateTurn: ->
-		@dispatchEvent {type: "onUpdateTurn", turn: @turn}
+		@dispatchEvent {type: "onUpdateTurn", turn: @turn, s2turn: @s2turn, hasS2: @hasS2()}
 
 class MonsView
 	constructor: (eleId) ->
 		@viewElement = $$(eleId);
 	onUpdateTurn: (e) ->
-		@viewElement.value = e.turn
+		s1turnView = e.turn
+		s2turnView = if e.hasS2 == true then e.s2turn else "-"
+		if  e.hasS2 == true and e.turn == 0
+			s1charging = "class='skill-non-charging'"
+			s2charging = "class='skill-charging'"
+		else
+			s1charging = "class='skill-charging'"
+			s2charging = "class='skill-non-charging'"
+		@viewElement.innerHTML = "<span class='skill-num'>S1:</span><span #{s1charging}>#{s1turnView}</span><br>
+		                          <span class='skill-num'>S2:</span><span #{s2charging}>#{s2turnView}</span>"
+		
 		@viewElement.disabled = (e.turn != 0);
-
+		if e.s2turn == 0 and e.hasS2 == true and 
+			$(@viewElement).addClass("s2-charge");
+		else
+			$(@viewElement).removeClass("s2-charge");
 
 class MonsSwapper
 	mixin @, EventDispatcher

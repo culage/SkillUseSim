@@ -36,7 +36,7 @@ class App
 	
 		ids = ["#txtSaveName"]
 		for i in [0..@TEAM_MAX]
-			ids.push id for id in ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtISt#{i}", "#txtIHe#{i}"]
+			ids.push id for id in ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtS2St#{i}", "#txtS2He#{i}"]
 		@vs = new ValueStorage(ids, cookieAccess)
 		@vs.addViewer new ValueStorageListView("#lstSaveList")
 
@@ -63,8 +63,8 @@ class App
 		@swapper.addEventListener "onSwaped", (e) => @lastElement.set(e.swapToElement)
 
 		for i in [0..@TEAM_MAX]
-			@swapper.addMonsElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtISt#{i}", "#txtIHe#{i}"]
-			@lastElement.addElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtISt#{i}", "#txtIHe#{i}"]
+			@swapper.addMonsElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtS2St#{i}", "#txtS2He#{i}"]
+			@lastElement.addElement ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtS2St#{i}", "#txtS2He#{i}"]
 
 		$$("#btnSwapL").addEventListener "click", => @swapper.swapLeft (@lastElement.get())
 		$$("#btnSwapR").addEventListener "click", => @swapper.swapRight(@lastElement.get())
@@ -107,7 +107,7 @@ class App
 	initTextSelect: ->
 		ids = []
 		for i in [0..@TEAM_MAX]
-			ids.push id for id in ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtISt#{i}","#txtIHe#{i}"]
+			ids.push id for id in ["#txtSt#{i}", "#txtHe#{i}", "#txtSp#{i}", "#txtS2St#{i}","#txtS2He#{i}"]
 		for id in ids
 			$$(id).addEventListener "click", -> this.select()
 
